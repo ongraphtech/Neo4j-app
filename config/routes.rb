@@ -7,6 +7,9 @@ Dummyapp::Application.routes.draw do
   match '/signin',  to: 'sessions#new',         via: 'get'
   match '/signout', to: 'sessions#destroy',     via: 'delete'
   match 'confirm_user/:token', to: 'sessions#confirm_user', via: 'get', as: :confirmation
+  match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
+  # match '/logout', to: 'sessions#destroy', via: [:get, :post]
+
 
   root  'static_pages#home'
  end

@@ -31,6 +31,8 @@ class User
   before_create :create_confirmation_token
   after_create  :send_email_confirmation
 
+  has_n :identities
+
   class << self
 
     def secure_hash(string)
@@ -47,6 +49,10 @@ class User
 
     def hash(token)
       Digest::SHA1.hexdigest(token.to_s)
+    end
+
+    def create_with_omniauth(info)
+      create(name: info['name'])
     end
   end
 
