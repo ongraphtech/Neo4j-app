@@ -1,6 +1,7 @@
 require 'digest'
 class User
   include Neo4j::ActiveNode
+
   property :id
   property :email
   property :name
@@ -33,6 +34,9 @@ class User
   after_create  :send_email_confirmation
 
   has_n :microposts
+  # has_many :relationships, foreign_key: "follower_id", dependent: :destroy
+  # has_n(:relationships).to(User).relationship(Relationship)
+  has_n(:followed_users).to(User)
 
   class << self
 
@@ -53,6 +57,26 @@ class User
     end
   end
 
+  def following?(other_user)
+    rels(dir: :outgoing, type: :followed_users, between: other_user)
+    # relationships.find(followed_id: other_user.id)
+  end
+
+  def follow!(other_user)
+    followed_users.create(other_user, follower_id: self.id, following_id: other_user.id)
+    relationships.create!(followed_id: other_user.id)
+  end
+
+  def unfollow!(other_user)
+    relationships.find(followed_id: other_user.id).destroy
+  end
+
+  def followers
+    # user.rels(dir: :outgoing, type: :followed_users, between: follower_user1).map{|m| m[:follower_id]}
+    rels(dir: :incoming, type: :followed_users)
+
+  end
+
   def email_uniqueness
     user = User.find(email: email)
     if user.present? and user.email_changed?
@@ -61,9 +85,9 @@ class User
   end
 
 
-    def secure_password
+  def secure_password
     self.password = User.encrypt_password(email, password)
-   end
+  end
 
   def create_remember_token
     # Create the remember token.
