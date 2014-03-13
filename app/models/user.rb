@@ -54,16 +54,18 @@ class User
   end
 
   def email_uniqueness
-    user = User.find(email: email)
-    if user.present? and user.email_changed?
+    user = User.find(email: email)    
+    if user.present? and (user.email_changed? or new_record?)
       errors.add(:email, "already exist.")
-    end
+    end    
   end
 
 
-    def secure_password
-    self.password = User.encrypt_password(email, password)
-   end
+  def secure_password
+    if password_changed? or new_record?
+      self.password = User.encrypt_password(email, password) 
+    end
+  end
 
   def create_remember_token
     # Create the remember token.
@@ -81,7 +83,7 @@ class User
   end
 
   def confirmed?
-    self.confirmed_at.present?
+     self.confirmed_at.present?
   end
 
 end
