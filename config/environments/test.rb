@@ -35,4 +35,6 @@ Dummyapp::Application.configure do
   config.active_support.deprecation = :stderr
 
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
+
+  config.neo4j.storage_path = "#{config.root}/db/neo4j-test"
 end

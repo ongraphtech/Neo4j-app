@@ -58,6 +58,10 @@ class User
      all.map{|u| u}[0]
     end
 
+    def last
+       all.map{|u| u}[User.count - 1]
+    end
+
   end
 
   def email_uniqueness

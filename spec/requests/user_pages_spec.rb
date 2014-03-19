@@ -7,15 +7,15 @@ describe "User pages" do
   describe "index" do
     let(:user) { FactoryGirl.create(:user) }
 
-    before(:all) { 5.times { FactoryGirl.create(:user) } }
-    after(:all)  { User.destroy_all }
+    before(:all) { 5.times { FactoryGirl.build(:user) } }
+    after(:all)  { User.delete_all }
 
     before(:each) do
       sign_in user
       visit users_path
     end
 
-    # it { should have_selector('title', text: 'All users') }
+    # it { should have_selector('title', text: 'All users') } 
     it { should have_selector('h1',    text: 'All users') }
 
     # describe "pagination" do
@@ -60,7 +60,7 @@ describe "User pages" do
   end
 
   describe "profile page" do
-    let(:user) { FactoryGirl.create(:user) }
+    let(:user) { User.last }
     let!(:m1) { m1= Micropost.create(content: "Foo"); m1.user = user; m1}
     let!(:m2) { m2= Micropost.create(content: "Bar"); m2.user = user; m2 }
 

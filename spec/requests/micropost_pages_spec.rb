@@ -27,7 +27,7 @@ describe "Micropost pages" do
   end
 
   describe "micropost destruction" do
-    let(:user) { FactoryGirl.create(:user) }
+    let(:user) { User.last }
     before do
       # This code is not idiomatically correct.
       @micropost = Micropost.create(content: "Lorem ipsum")

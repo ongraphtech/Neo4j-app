@@ -5,6 +5,8 @@ FactoryGirl.define do
     password "foobar"
     password_confirmation "foobar"
     remember_token SecureRandom.urlsafe_base64
+    confirmation_token User.hash(User.new_random_token)
+    confirmation_sent_at Time.now.utc
 
     factory :admin do
       admin true

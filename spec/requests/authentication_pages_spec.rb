@@ -55,7 +55,7 @@ describe "Authentication" do
       it { should_not have_link('Sign in', href: signin_path) }
 
     describe "with valid information" do
-      let(:user) { FactoryGirl.create(:user) }
+      let(:user) { FactoryGirl.build(:user) }
       before do
         fill_in "Email",    with: user.email.upcase
         fill_in "Password", with: user.password
@@ -68,7 +68,7 @@ describe "Authentication" do
     describe "authorization" do
 
     describe "for non-signed-in users" do
-      let(:user) { FactoryGirl.create(:user) }
+      let(:user) {FactoryGirl.create(:user) }
 
       describe "in the Users controller" do
 
