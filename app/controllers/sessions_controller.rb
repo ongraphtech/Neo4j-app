@@ -3,9 +3,9 @@ class SessionsController < ApplicationController
   def new
   end
 
-  def create
-
+  def create    
     user = User.find(email: params[:session][:email].downcase)
+    
     if user && User.encrypt_password(user.email, params[:session][:password]) == user.password
       # Sign the user in and redirect to the user's show page.
       sign_in user

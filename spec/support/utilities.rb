@@ -1,13 +1,18 @@
 def sign_in(user, options={})
-  if options[:no_capybara]
-    # Sign in when not using Capybara.
-    remember_token = User.new_remember_token
-    cookies[:remember_token] = remember_token
-    user.update_attribute(:remember_token, User.hash(remember_token))
+  if user.confirmed?
+    if options[:no_capybara]
+      # Sign in when not using Capybara.
+      remember_token = User.new_remember_token
+      cookies[:remember_token] = remember_token
+      user.update_attribute(:remember_token, User.hash(remember_token))   
+    else
+      visit signin_path
+      fill_in "Email",    with: user.email
+      fill_in "Password", with: 'foobar'
+
+      click_button "Sign in"
+    end
   else
-    visit signin_path
-    fill_in "Email",    with: user.email
-    fill_in "Password", with: user.password
-    click_button "Sign in"
+     visit confirmation_url(user.confirmation_token)
   end
 end

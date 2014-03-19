@@ -4,11 +4,11 @@ describe ApplicationHelper do
 
   describe "full_title" do
     it "should include the page title" do
-      expect(full_title("foo")).to match(/foo/)
+      expect(full_title("Neo4j App")).to match(/Neo4j App/)
     end
 
     it "should include the base title" do
-      expect(full_title("foo")).to match(/^Ruby on Rails Tutorial Sample App/)
+      expect(full_title("Neo4j App")).to match(/^Neo4j App/)
     end
 
     it "should not include a bar for the home page" do

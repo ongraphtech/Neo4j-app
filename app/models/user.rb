@@ -1,6 +1,8 @@
 require 'digest'
 class User
   include Neo4j::ActiveNode
+
+  
   property :id
   property :email
   property :name
@@ -51,6 +53,11 @@ class User
     def hash(token)
       Digest::SHA1.hexdigest(token.to_s)
     end
+
+    def first
+     all.map{|u| u}[0]
+    end
+
   end
 
   def email_uniqueness
